@@ -5,18 +5,19 @@ import { useMemo, useState } from "react";
 
 function App() {
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [expenses, setExpenses] = useState(EXPENSES);
 
   const filteredExpenses = useMemo(() => {
     if (selectedCategories.length === 0) {
-      return EXPENSES;
+      return expenses;
     }
 
-    return EXPENSES.filter(expense =>
+    return expenses.filter(expense =>
       selectedCategories.includes(expense.category)
     );
-  }, [selectedCategories]);
+  }, [selectedCategories, expenses]);
 
-  const allSummary = calculateSummary(EXPENSES);
+  const allSummary = calculateSummary(expenses);
 const summary = calculateSummary(filteredExpenses);
 
   return (
@@ -28,6 +29,7 @@ const summary = calculateSummary(filteredExpenses);
         totalTransactions={filteredExpenses.length}
         selectedCategories={selectedCategories}
         setSelectedCategories={setSelectedCategories}
+        setExpenses={setExpenses}
       />
     </div>
   );
