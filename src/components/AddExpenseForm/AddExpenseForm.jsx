@@ -10,24 +10,36 @@ function AddExpenseForm({ setExpenses }) {
     date: "",
   });
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+const handleChange = (e) => {
+  setForm({
+    ...form,
+    [e.target.name]: e.target.value,
+  });
+
+  setError("");
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      !form.merchant ||
-      !form.amount ||
-      !form.date
-    ) {
-      alert("Please fill all required fields.");
-      return;
-    }
+if (
+  !form.merchant ||
+  !form.amount ||
+  Number(form.amount) <= 0 ||
+  !form.date
+) {
+  setError("Please enter valid expense details.");
+  setSuccess("");
+  return;
+}
+    setError("");
+    setSuccess("Expense added successfully!");
+    setTimeout(() => {
+  setSuccess("");
+}, 3000);
 
     setExpenses((prev) => [
       ...prev,
@@ -40,7 +52,7 @@ function AddExpenseForm({ setExpenses }) {
         date: form.date,
       },
     ]);
-
+    
     setForm({
       merchant: "",
       amount: "",
@@ -48,79 +60,132 @@ function AddExpenseForm({ setExpenses }) {
       category: "Travel",
       date: "",
     });
+
+
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-6 mt-8">
-      <h2 className="text-2xl font-semibold mb-6">
-        Add Expense
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-6 hover:shadow-lg transition">
+      <h2 className="text-3xl font-bold mb-6">
+        Add New Expense
       </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="grid md:grid-cols-5 gap-4"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
       >
-        <input
-          type="text"
-          name="merchant"
-          placeholder="Merchant"
-          value={form.merchant}
-          onChange={handleChange}
-          className="border rounded-lg p-2"
-        />
+        {/* Merchant */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-slate-600 mb-2">
+            Merchant
+          </label>
 
-        <input
-          type="number"
-          name="amount"
-          placeholder="Amount"
-          value={form.amount}
-          onChange={handleChange}
-          className="border rounded-lg p-2"
-        />
+          <input
+            type="text"
+            name="merchant"
+            placeholder="e.g. Starbucks"
+            value={form.merchant}
+            onChange={handleChange}
+            className="border border-slate-300 r\ounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
 
-        <select
-          name="currency"
-          value={form.currency}
-          onChange={handleChange}
-          className="border rounded-lg p-2"
-        >
-          {Object.keys(RATES).map((currency) => (
-            <option
-              key={currency}
-              value={currency}
-            >
-              {currency}
-            </option>
-          ))}
-        </select>
+        {/* Amount */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-slate-600 mb-2">
+            Amount
+          </label>
 
-        <select
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          className="border rounded-lg p-2"
-        >
-          <option>Travel</option>
-          <option>Food</option>
-          <option>Software</option>
-          <option>Entertainment</option>
-        </select>
+          <input
+            type="number"
+            name="amount"
+            placeholder="0.00"
+            value={form.amount}
+            onChange={handleChange}
+            className="border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+min="0.01"
+step="0.01"
+          />
+        </div>
 
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          className="border rounded-lg p-2"
-        />
+        {/* Currency */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-slate-600 mb-2">
+            Currency
+          </label>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white rounded-lg p-2 hover:bg-blue-700 md:col-span-5"
-        >
-          Add Expense
-        </button>
+          <select
+            name="currency"
+            value={form.currency}
+            onChange={handleChange}
+            className="border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {Object.keys(RATES).map((currency) => (
+              <option key={currency} value={currency}>
+                {currency}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Category */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-slate-600 mb-2">
+            Category
+          </label>
+
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            className="border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option>Travel</option>
+            <option>Food</option>
+            <option>Software</option>
+            <option>Entertainment</option>
+          </select>
+        </div>
+
+        {/* Date */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-slate-600 mb-2">
+            Date
+          </label>
+
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={handleChange}
+            className="border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        {/* Button */}
+        <div className="flex items-end">
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-semibold rounded-xl py-3 hover:bg-blue-700 transition shadow-md hover:shadow-lg"
+          >
+            + Add Expense
+          </button>
+        </div>
       </form>
+      {error && (
+        <p className="mt-4 text-red-600 font-medium">
+          {error}
+        </p>
+      )}
+
+      {success && (
+        <p className="mt-4 text-green-600 font-medium">
+          ✅ {success}
+        </p>
+      )}
     </div>
   );
 }

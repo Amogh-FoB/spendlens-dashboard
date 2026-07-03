@@ -13,7 +13,7 @@ function CategoryFilter({ categories, selected, onSelect }) {
 
       <button
         onClick={() => onSelect([])}
-        className={`px-4 py-2 rounded-lg border ${
+        className={`px-5 py-2.5 font-medium rounded-full border ${
           selected.length === 0
             ? "bg-blue-600 text-white"
             : "bg-white"
@@ -26,7 +26,7 @@ function CategoryFilter({ categories, selected, onSelect }) {
         <button
           key={category.category}
           onClick={() => toggleCategory(category.category)}
-          className={`px-4 py-2 rounded-lg border ${
+          className={`px-5 py-2.5 font-medium rounded-full border ${
             selected.includes(category.category)
               ? "bg-blue-600 text-white"
               : "bg-white"

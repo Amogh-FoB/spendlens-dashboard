@@ -1,39 +1,52 @@
 import { convertToUSD } from "./currency";
+import { RATES } from "../data/rates";
 
 /**
  * Calculate all dashboard summary metrics
  * @param {Array} expenses
  * @returns {Object}
  */
-export function calculateSummary(expenses) {
+
+export function calculateSummary(
+  expenses,
+  eurRate = RATES.EUR
+) {
   const categoryMap = {};
   const merchantTotals = {};
   let overallTotal = 0;
 
   expenses.forEach((expense) => {
-    const usd = convertToUSD(expense.amount, expense.currency);
+    const usd = convertToUSD(
+  expense.amount,
+  expense.currency,
+  eurRate
+);
 
     overallTotal += usd;
 
-    // Merchant totals
     merchantTotals[expense.merchant] =
       (merchantTotals[expense.merchant] || 0) + usd;
 
-    // Category summary
     if (!categoryMap[expense.category]) {
       categoryMap[expense.category] = {
         category: expense.category,
         transactionCount: 0,
         totalUSD: 0,
-        largestTransaction: 0,
+        largestTransaction: null,
       };
     }
 
     categoryMap[expense.category].transactionCount++;
     categoryMap[expense.category].totalUSD += usd;
 
-    if (usd > categoryMap[expense.category].largestTransaction) {
-      categoryMap[expense.category].largestTransaction = usd;
+    const currentLargest =
+      categoryMap[expense.category].largestTransaction;
+
+    if (!currentLargest || usd > currentLargest.usd) {
+      categoryMap[expense.category].largestTransaction = {
+        merchant: expense.merchant,
+        usd,
+      };
     }
   });
 
@@ -41,7 +54,6 @@ export function calculateSummary(expenses) {
     .map((category) => ({
       ...category,
       totalUSD: Number(category.totalUSD.toFixed(2)),
-      largestTransaction: Number(category.largestTransaction.toFixed(2)),
     }))
     .sort((a, b) => b.totalUSD - a.totalUSD);
 

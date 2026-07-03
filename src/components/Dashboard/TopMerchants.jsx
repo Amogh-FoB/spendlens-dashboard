@@ -1,4 +1,5 @@
 function TopMerchants({ merchants }) {
+  console.log("TopMerchants props:", merchants);
   return (
     <div className="bg-white rounded-xl shadow-sm border p-6">
       <h2 className="text-xl font-semibold mb-4">
