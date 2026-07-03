@@ -4,11 +4,11 @@ SpendLens is a React-based expense analytics dashboard that helps users analyze 
 
 ## Live Demo
 
-🔗 <YOUR_VERCEL_URL>
+🔗 [<YOUR_VERCEL_URL>](https://spendlens-dashboard-tfa4.vercel.app/)
 
 ## GitHub Repository
 
-🔗 <YOUR_GITHUB_REPO_URL>
+🔗 [<YOUR_GITHUB_REPO_URL>](https://github.com/Amogh-FoB/spendlens-dashboard)
 
 ---
 
