@@ -1,5 +1,4 @@
 function CategorySummary({ categories }) {
-    console.log("CategorySummary props:", { categories });
     return (
         <div className="bg-white rounded-xl shadow-sm border p-6">
             <h2 className="text-xl font-semibold mb-4">
