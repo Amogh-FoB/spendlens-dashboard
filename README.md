@@ -96,7 +96,7 @@ src/
 Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPO_URL>
+git clone https://github.com/Amogh-FoB/spendlens-dashboard
 ```
 
 Install dependencies
